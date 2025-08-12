@@ -44,6 +44,12 @@ laravel new kourin
 laravelのSPA風のコンポーネントライブラリ<br>
 https://zenn.dev/mabo/articles/71ada90a3f7948
 
+php artisan make:livewire HomePage
+COMPONENT CREATED  🤙
+
+CLASS: app/Livewire/HomePage.php
+VIEW:  resources/views/livewire/home-page.blade.php
+
 ## volt
 PHPで使えるvueっぽい仕組み<br>
 https://biz.addisteria.com/laravel-volt-livewire/

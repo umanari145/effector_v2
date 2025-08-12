@@ -2,10 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Livewire\Home;
+use App\Livewire\About;
+use App\Livewire\Company;
+use App\Livewire\Bio;
+use App\Livewire\Contact;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+# 静的サイト
+Route::get('/', Home::class)->name('home');
+Route::get('/about', About::class)->name('about');
+Route::get('/company', Company::class)->name('company');
+Route::get('/bio', Bio::class)->name('bio');
+Route::get('/contact', Contact::class)->name('contact');
+/*
+Route::get('/health-mechanism', HealthMechanismPage::class)->name('health.mechanism');
+Route::get('/fermentation', FermentationPage::class)->name('fermentation');
+Route::get('/natural-power', NaturalPowerPage::class)->name('natural.power');
+Route::get('/plant-power', PlantPowerPage::class)->name('plant.power');
+Route::get('/sukuaramin', SukuaraminPage::class)->name('sukuaramin');
+Route::get('/qa', QaPage::class)->name('qa');*/
+
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

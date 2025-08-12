@@ -10,9 +10,18 @@
     @livewireStyles
 </head>
 <body class="bg-gray-50">
+    @include('components.layouts.parts.header')
     <div id="app">
-        @yield('content')
+    <div class="bg-white">
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex gap-8">
+                @include('components.layouts.parts.sidebar')
+                @yield('content')
+            </div>
+        </div>    
     </div>
+    @include('components.layouts.parts.footer')
     @livewireScripts
 </body>
 </html>

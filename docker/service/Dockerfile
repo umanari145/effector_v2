@@ -36,11 +36,12 @@ RUN apt-get update && apt-get install -y \
 # RUN pecl install imagick \
 #   && docker-php-ext-enable imagick
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejss
+RUN apt-get install -y nodejs　
 
-# xdebug
-RUN pecl install xdebug-3.1.5 && \
-    docker-php-ext-enable xdebug
+RUN apt-get update \
+  && apt-get upgrade\
+  && apt-get install libsqlite3-dev\
+  && apt-get install sqlite3
 
 # modRewriteを有効化する
 RUN mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled

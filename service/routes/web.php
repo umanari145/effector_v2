@@ -13,15 +13,15 @@ use App\Livewire\DynamicContents;
 Route::get('/', Home::class)->name('home');
 Route::get('/about', DynamicContents::class)->name('about');
 Route::get('/company', DynamicContents::class)->name('company');
-Route::get('/bio', DynamicContents::class)->name('bio');
 Route::get('/contact', Contact::class)->name('contact');
-/*
-Route::get('/health-mechanism', HealthMechanismPage::class)->name('health.mechanism');
-Route::get('/fermentation', FermentationPage::class)->name('fermentation');
-Route::get('/natural-power', NaturalPowerPage::class)->name('natural.power');
-Route::get('/plant-power', PlantPowerPage::class)->name('plant.power');
-Route::get('/sukuaramin', SukuaraminPage::class)->name('sukuaramin');
-Route::get('/qa', QaPage::class)->name('qa');*/
+
+Route::get('/health-mechanism', DynamicContents::class)->name('health.mechanism');
+Route::get('/fermentation', DynamicContents::class)->name('fermentation');
+Route::get('/natural-power', DynamicContents::class)->name('natural.power');
+Route::get('/plant-power', DynamicContents::class)->name('plant.power');
+Route::get('/bio', DynamicContents::class)->name('bio');
+Route::get('/sukuaramin', DynamicContents::class)->name('sukuaramin');
+Route::get('/qa', DynamicContents::class)->name('qa');
 
 
 Route::view('dashboard', 'dashboard')

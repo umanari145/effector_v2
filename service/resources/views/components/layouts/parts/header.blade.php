@@ -2,10 +2,14 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-center py-6">
             <h1>
-                <img src="{{ asset('image/head_titile.gif') }}" width="210" height="121" alt="光輪コーポレーション" >
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('image/head_titile.gif') }}" class="hover:opacity-40 transition" alt="光輪コーポレーション" >
+                </a>
             </h1>
             <h2 class="text-xl text-green-700">
-                <img src="{{ asset('image/maintitle.gif') }}" width="489" height="121" alt="エフェクター蘇癒研究所" />
+                <a href="{{ route('home') }}" >
+                    <img src="{{ asset('image/maintitle.gif') }}" class="hover:opacity-40 transition" alt="エフェクター蘇癒研究所" />
+                </a>
             </h2>
         </div>
     </div>

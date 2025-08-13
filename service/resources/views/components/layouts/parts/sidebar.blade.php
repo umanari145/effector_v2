@@ -15,10 +15,10 @@
 
     <!-- Product Banners -->
     <div class="mt-6 space-y-4">
-        <a href="{{ route('bio') }}" class="block">
-            <img src="{{ asset('image/baiobanner.png') }}" alt="スーパーバイオ２１">
+        <a href="{{ route('bio') }}" class="block hover:opacity-40 transition flex justify-center">
+            <img src="{{ asset('image/baiobanner.png') }}"  alt="スーパーバイオ２１">
         </a>
-        <a href="{{ route('sukuaramin') }}" class="block">
+        <a href="{{ route('sukuaramin') }}" class="block mt-2 hover:opacity-40 transition  flex justify-center">
             <img src="{{ asset('image/sukuarabanner.png') }}" alt="スーパーバイオ２１">
         </a>
     </div>

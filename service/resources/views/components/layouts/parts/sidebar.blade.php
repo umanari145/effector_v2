@@ -18,16 +18,10 @@
     <!-- Product Banners -->
     <div class="mt-6 space-y-4">
         <a href="{{ route('bio') }}" class="block">
-            <div class="bg-gradient-to-r from-green-400 to-green-600 text-white p-4 rounded-lg shadow hover:shadow-lg transition">
-                <h4 class="font-bold text-center">スーパーバイオ２１</h4>
-            </div>
+            <img src="{{ asset('image/baiobanner.png') }}" alt="スーパーバイオ２１">
         </a>
-        <!--
-        <a href="route('sukuaramin')" class="block">
-            <div class="bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 rounded-lg shadow hover:shadow-lg transition">
-                <h4 class="font-bold text-center">スクアラミンプルミエ</h4>
-            </div>
+        <a href="{{ route('bio') }}" class="block">
+            <img src="{{ asset('image/sukuarabanner.png') }}" alt="スーパーバイオ２１">
         </a>
-        -->
     </div>
 </aside>

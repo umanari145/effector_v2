@@ -7,12 +7,13 @@ use App\Livewire\About;
 use App\Livewire\Company;
 use App\Livewire\Bio;
 use App\Livewire\Contact;
+use App\Livewire\DynamicContents;
 
 # 静的サイト
 Route::get('/', Home::class)->name('home');
-Route::get('/about', About::class)->name('about');
-Route::get('/company', Company::class)->name('company');
-Route::get('/bio', Bio::class)->name('bio');
+Route::get('/about', DynamicContents::class)->name('about');
+Route::get('/company', DynamicContents::class)->name('company');
+Route::get('/bio', DynamicContents::class)->name('bio');
 Route::get('/contact', Contact::class)->name('contact');
 /*
 Route::get('/health-mechanism', HealthMechanismPage::class)->name('health.mechanism');

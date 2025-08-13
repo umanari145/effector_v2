@@ -1,4 +1,4 @@
-<div id="paragraph2" class="bg-green-100 p-8 rounded-lg">
+<div id="paragraph2" class="w-7/12 bg-green-100 p-8 rounded-lg">
     <div class="title">
         <img src="{{ asset('image/about.png') }}" alt="エフェクター蘇癒研究所とは" />
     </div>

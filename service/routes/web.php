@@ -15,10 +15,11 @@ Route::get('/about', DynamicContents::class)->name('about');
 Route::get('/company', DynamicContents::class)->name('company');
 Route::get('/contact', Contact::class)->name('contact');
 
-Route::get('/health-mechanism', DynamicContents::class)->name('health.mechanism');
-Route::get('/fermentation', DynamicContents::class)->name('fermentation');
-Route::get('/natural-power', DynamicContents::class)->name('natural.power');
-Route::get('/plant-power', DynamicContents::class)->name('plant.power');
+
+Route::get('/natural-structure', DynamicContents::class)->name('natural-structure');
+Route::get('/fermented-foods', DynamicContents::class)->name('fermented-foods');
+Route::get('/natural-power', DynamicContents::class)->name('natural-power');
+Route::get('/plant-power', DynamicContents::class)->name('plant-power');
 Route::get('/bio', DynamicContents::class)->name('bio');
 Route::get('/sukuaramin', DynamicContents::class)->name('sukuaramin');
 Route::get('/qa', DynamicContents::class)->name('qa');

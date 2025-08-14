@@ -1,3 +1,8 @@
+@extends('components.layouts.app')
+
+@section('title', '健康の仕組み')
+
+@section('content')
 <div id="paragraph2" class="w-7/12 bg-green-100 p-8 rounded-lg">
     <div class="title">
         <img src="{{ asset('image/kenkou.png') }}" alt="健康のしくみ" />
@@ -132,3 +137,4 @@
         </div>
     </div>
 </div>
+@endsection

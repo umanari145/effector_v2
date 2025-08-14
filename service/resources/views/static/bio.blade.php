@@ -1,3 +1,8 @@
+@extends('components.layouts.app')
+
+@section('title', 'スーパーバイオ21')
+
+@section('content')
 <div id="paragraph2" class="w-7/12 bg-green-100 p-8 rounded-lg">
     <div class="title">
         <img src="{{ asset('image/baiobar.png') }}" alt="スーパーバイオ21" />
@@ -64,14 +69,14 @@
         ポケットなどの 携帯の便利さが特徴となっています。
         </p>
         <p class="mousikomi mt-2 mb-8">
-            <a href="cart.php" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
+            <a href="{{ route('cart.index') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
                 お申し込みはこちらをクリック
             </a>
         </p>
 
         <hr class="my-6 border-t-1 border-gray-300">
         <div class="flex justify-center">
-            <a href="sshokubutu.html" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md mr-8">
+            <a href="{{ route('plant-power') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md mr-8">
                 前へ戻る
             </a>
             <a href="#" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md mr-8">
@@ -83,3 +88,4 @@
         </div>
     </div>
 </div>
+@endsection

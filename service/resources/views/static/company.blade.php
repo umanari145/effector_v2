@@ -1,3 +1,8 @@
+@extends('components.layouts.app')
+
+@section('title', '会社案内')
+
+@section('content')
 <div class="overflow-x-auto">
     <div class="title">
         <img src="{{ asset('image/company.png') }}" alt="会社案内" />
@@ -56,3 +61,4 @@
         </tbody>
     </table>
 </div>
+@endsection

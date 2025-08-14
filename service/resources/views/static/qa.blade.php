@@ -1,3 +1,8 @@
+@extends('components.layouts.app')
+
+@section('title', 'お客様Q&A')
+
+@section('content')
 <div id="paragraph2" class="w-7/12 bg-green-100 p-8 rounded-lg">
     <div class="title">
         <img src="{{ asset('image/qa.png') }}" alt="お客様Q&A" />
@@ -73,3 +78,4 @@
     </div>
     </div>
 </div>
+@endsection

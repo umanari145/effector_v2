@@ -1,27 +1,32 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactFormController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
-use App\Livewire\Home;
-use App\Livewire\DynamicContents;
 
 # 静的サイト
-Route::get('/', Home::class)->name('home');
-Route::get('/about', DynamicContents::class)->name('about');
-Route::get('/company', DynamicContents::class)->name('company');
+Route::view('/', 'static.home')->name('home');
+Route::view('/company', 'static.company')->name('company');
+Route::view('/about', 'static.about')->name('about');
+
+Route::view('/natural-structure', 'static.natural-structure')->name('natural-structure');
+Route::view('/fermented-foods', 'static.fermented-foods')->name('fermented-foods');
+Route::view('/natural-power', 'static.natural-power')->name('natural-power');
+Route::view('/plant-power', 'static.plant-power')->name('plant-power');
+Route::view('/bio', 'static.bio')->name('bio');
+Route::view('/sukuaramin', 'static.sukuaramin')->name('sukuaramin');
+Route::view('/qa', 'static.qa')->name('qa');
+
 Route::get('/contact', [ContactFormController::class, 'index'])->name('contact.form');
 Route::post('/contact/confirm', [ContactFormController::class, 'confirm'])->name('contact.confirm');
 Route::post('/contact/complete', [ContactFormController::class, 'complete'])->name('contact.complete');
 
-Route::get('/natural-structure', DynamicContents::class)->name('natural-structure');
-Route::get('/fermented-foods', DynamicContents::class)->name('fermented-foods');
-Route::get('/natural-power', DynamicContents::class)->name('natural-power');
-Route::get('/plant-power', DynamicContents::class)->name('plant-power');
-Route::get('/bio', DynamicContents::class)->name('bio');
-Route::get('/sukuaramin', DynamicContents::class)->name('sukuaramin');
-Route::get('/qa', DynamicContents::class)->name('qa');
 
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/buy', [CartController::class, 'buy'])->name('cart.buy');
+Route::post('/cart/change', [CartController::class, 'change'])->name('cart.change');
+Route::post('/cart/decide', [CartController::class, 'decide'])->name('cart.decide');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

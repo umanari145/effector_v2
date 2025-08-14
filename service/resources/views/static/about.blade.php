@@ -1,3 +1,8 @@
+@extends('components.layouts.app')
+
+@section('title', 'サイト概要')
+
+@section('content')
 <div id="paragraph2" class="w-7/12 bg-green-100 p-8 rounded-lg">
     <div class="title">
         <img src="{{ asset('image/about.png') }}" alt="エフェクター蘇癒研究所とは" />
@@ -19,7 +24,7 @@
 
         突然私、自身に襲った病魔は、緑内障と診断されたのです。<br>
         しかも、あろうことか、医師からは両眼共に近い将来、失明を余儀なくされる<br>
-        と言う宣告を受けたのです。 頭の中で何かがぷつんとはじけました。<br><br> 
+        と言う宣告を受けたのです。 頭の中で何かがぷつんとはじけました。<br><br>
 
         その時、２０歳の私の受けた心の衝撃は、４０数年を経た今日においても<br>
         私の記憶の中から忘れることはできません。<br><br>
@@ -69,3 +74,4 @@
         </a>
     </div>
 </div>
+@endsection

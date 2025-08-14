@@ -1,4 +1,8 @@
+@extends('components.layouts.app')
 
+@section('title', 'トップページ')
+
+@section('content')
 <!-- Main Content Area -->
 <main class="flex-1">
     <!-- Hero Image Section (replacing Flash) -->
@@ -33,3 +37,4 @@
         </div>
     </div>
 </main>
+@endsection

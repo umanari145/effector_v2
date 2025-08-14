@@ -1,20 +1,18 @@
 <?php
 
+use App\Http\Controllers\ContactFormController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Livewire\Home;
-use App\Livewire\About;
-use App\Livewire\Company;
-use App\Livewire\Bio;
-use App\Livewire\Contact;
 use App\Livewire\DynamicContents;
 
 # 静的サイト
 Route::get('/', Home::class)->name('home');
 Route::get('/about', DynamicContents::class)->name('about');
 Route::get('/company', DynamicContents::class)->name('company');
-Route::get('/contact', Contact::class)->name('contact');
-
+Route::get('/contact', [ContactFormController::class, 'index'])->name('contact.form');
+Route::post('/contact/confirm', [ContactFormController::class, 'confirm'])->name('contact.confirm');
+Route::post('/contact/complete', [ContactFormController::class, 'complete'])->name('contact.complete');
 
 Route::get('/natural-structure', DynamicContents::class)->name('natural-structure');
 Route::get('/fermented-foods', DynamicContents::class)->name('fermented-foods');

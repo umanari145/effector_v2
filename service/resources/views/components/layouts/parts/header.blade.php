@@ -22,7 +22,7 @@
             <li class="w-32 text-center"><a href="{{ route('about') }}" class="block py-4 px-2 text-white hover:bg-green-500 transition">サイト概要</a></li>
             <li class="w-32 text-center"><a href="{{ route('company') }}" class="block py-4 px-2 text-white hover:bg-green-500 transition">会社案内</a></li>
             <li class="w-32 text-center"><a href="{{ route('bio') }}" class="block py-4 px-2 text-white hover:bg-green-500 transition">商品購入</a></li>
-            <li class="w-32 text-center"><a href="{{ route('contact') }}" class="block py-4 px-2 text-white hover:bg-green-500 transition">お問合せ</a></li>
+            <li class="w-32 text-center"><a href="{{ route('contact.form') }}" class="block py-4 px-2 text-white hover:bg-green-500 transition">お問い合わせ</a></li>
         </ul>
     </div>
 </nav>

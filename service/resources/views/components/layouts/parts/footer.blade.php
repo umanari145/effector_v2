@@ -6,7 +6,7 @@
             <a href="{{ route('about') }}" class="hover:text-gray-300 transition">サイト概要</a>
             <a href="{{ route('company') }}" class="hover:text-gray-300 transition">会社案内</a>
             <a href="{{ route('bio') }}" class="hover:text-gray-300 transition">商品紹介</a>
-            <a href="{{ route('contact') }}" class="hover:text-gray-300 transition">お問合せ</a>
+            <a href="{{ route('contact.form') }}" class="hover:text-gray-300 transition">お問い合わせ</a>
         </nav>
         <div class="text-center text-sm">
             <p>〒274-0077　千葉県船橋市薬円台3-16-5-606　TEL:080-4400-5031（代）</p>

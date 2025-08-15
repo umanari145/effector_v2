@@ -21,7 +21,7 @@
         </p>
 
         <p class="mousikomi mt-2">
-            <a href="cart.php" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
+            <a href="{{ route('shopping.cart') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
                 お申し込みはこちらをクリック
             </a>
         </p>
@@ -75,7 +75,7 @@
             お勧めします。
         </p>
         <p class="mousikomi mt-2">
-            <a href="cart.php" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
+            <a href="{{ route('shopping.cart') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
                 お申し込みはこちらをクリック
             </a>
         </p>
@@ -102,7 +102,7 @@
             の海からのプレゼント「スクアラミン プルミエ」をぜひ、お試し下さい。
         </p>
         <p class="mousikomi mt-2 mb-8">
-            <a href="cart.php" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
+            <a href="{{ route('shopping.cart') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
                 お申し込みはこちらをクリック
             </a>
         </p>

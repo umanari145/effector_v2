@@ -23,10 +23,16 @@ Route::post('/contact/confirm', [ContactFormController::class, 'confirm'])->name
 Route::post('/contact/complete', [ContactFormController::class, 'complete'])->name('contact.complete');
 
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/buy', [CartController::class, 'buy'])->name('cart.buy');
-Route::post('/cart/change', [CartController::class, 'change'])->name('cart.change');
-Route::post('/cart/decide', [CartController::class, 'decide'])->name('cart.decide');
+Route::get('/shopping/cart', function () {
+    return view('shopping.cart');
+})->name('shopping.cart');
+
+Route::get('/shopping/customer', function () {
+    return view('shopping.customer');
+})->name('shopping.customer');
+
+Route::post('/shopping/change', [CartController::class, 'change'])->name('shopping.change');
+Route::post('/shopping/decide', [CartController::class, 'decide'])->name('shopping.decide');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

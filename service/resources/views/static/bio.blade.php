@@ -15,7 +15,7 @@
         の働きを利用して、自然環境下で発酵・熟成して生まれたパパイヤ酵素発酵食品です。<br />
         (製造特許番号は3370302)<br />
         <p class="mousikomi mt-2">
-            <a href="cart.php" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
+            <a href="{{ route('shopping.cart') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
                 お申し込みはこちらをクリック
             </a>
         </p>
@@ -49,7 +49,7 @@
         お知らせさせて頂ます。
         </p>
         <p class="mousikomi mt-2">
-            <a href="cart.php" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
+            <a href="{{ route('shopping.cart') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
                 お申し込みはこちらをクリック
             </a>
         </p>
@@ -69,7 +69,7 @@
         ポケットなどの 携帯の便利さが特徴となっています。
         </p>
         <p class="mousikomi mt-2 mb-8">
-            <a href="{{ route('cart.index') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
+            <a href="{{ route('shopping.cart') }}" class="inline-flex items-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-5 rounded-md">
                 お申し込みはこちらをクリック
             </a>
         </p>

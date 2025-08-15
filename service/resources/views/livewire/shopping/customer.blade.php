@@ -52,7 +52,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900 w-3/4">
                         <input type="text"
-                               wire:model.lazy="name"
+                               wire:model.live="name"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('name') border-red-500 @enderror"
                         >
                         @error('name')
@@ -66,7 +66,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="name_kana"
+                               wire:model.live="name_kana"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('name_kana') border-red-500 @enderror"
                                title="カタカナで入力してください"
                         >
@@ -81,7 +81,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="tel"
-                               wire:model.lazy="phone"
+                               wire:model.live="phone"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('phone') border-red-500 @enderror"
                                title="電話番号は数字とハイフンのみで入力してください"
                                placeholder="例: 03-1234-5678"
@@ -97,7 +97,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="email"
-                               wire:model.lazy="email"
+                               wire:model.live="email"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('email') border-red-500 @enderror"
                         >
                         @error('email')
@@ -111,7 +111,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="postal_code"
+                               wire:model.live="postal_code"
                                class="w-32 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('postal_code') border-red-500 @enderror"
                                title="郵便番号は「000-0000」の形式で入力してください"
                                placeholder="000-0000"
@@ -127,7 +127,7 @@
                         都道府県 <span class="text-red-500">*</span>
                     </th>
                     <td class="px-6 py-4 text-gray-900">
-                        <select wire:model.lazy="prefecture"
+                        <select wire:model.live="prefecture"
                                 class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('prefecture') border-red-500 @enderror"
                         >
                             <option value="">選択してください</option>
@@ -146,7 +146,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="city"
+                               wire:model.live="city"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('city') border-red-500 @enderror"
                                placeholder="例: 千代田区"
                         >
@@ -161,12 +161,12 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="address"
+                               wire:model.live="address"
                                placeholder="例: 霞が関1-1-1"
                                class="w-full mb-2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('address') border-red-500 @enderror"
                         >
                         <input type="text"
-                               wire:model.lazy="building"
+                               wire:model.live="building"
                                placeholder="建物名・部屋番号（任意）"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('building') border-red-500 @enderror">
                         @error('address')
@@ -187,7 +187,7 @@
         <div class="mb-4">
             <label class="flex items-center space-x-2">
                 <input type="checkbox"
-                       wire:model.lazy="same_as_customer"
+                       wire:model.live="same_as_customer"
                        class="form-checkbox h-5 w-5 text-green-600">
                 <span class="text-gray-700">購入者と同じ住所に配送する</span>
             </label>
@@ -201,7 +201,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900 w-3/4">
                         <input type="text"
-                               wire:model.lazy="shipping_name"
+                               wire:model.live="shipping_name"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_name') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif>
                         @error('shipping_name')
@@ -215,7 +215,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="shipping_name_kana"
+                               wire:model.live="shipping_name_kana"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_name_kana') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif
                                title="カタカナで入力してください">
@@ -230,7 +230,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="tel"
-                               wire:model.lazy="shipping_phone"
+                               wire:model.live="shipping_phone"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_phone') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif
                                title="電話番号は数字とハイフンのみで入力してください"
@@ -246,7 +246,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="shipping_postal_code"
+                               wire:model.live="shipping_postal_code"
                                class="w-32 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_postal_code') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif
                                title="郵便番号は「000-0000」の形式で入力してください"
@@ -262,7 +262,7 @@
                         都道府県 @if(!$same_as_customer)<span class="text-red-500">*</span>@endif
                     </th>
                     <td class="px-6 py-4 text-gray-900">
-                        <select wire:model.lazy="shipping_prefecture"
+                        <select wire:model.live="shipping_prefecture"
                                 class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_prefecture') border-red-500 @enderror"
                                 @if($same_as_customer) disabled @endif>
                             <option value="">選択してください</option>
@@ -281,7 +281,7 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="shipping_city"
+                               wire:model.live="shipping_city"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_city') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif
                                placeholder="例: 千代田区">
@@ -296,12 +296,12 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.lazy="shipping_address"
+                               wire:model.live="shipping_address"
                                placeholder="例: 霞が関1-1-1"
                                class="w-full mb-2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_address') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif>
                         <input type="text"
-                               wire:model.lazy="shipping_building"
+                               wire:model.live="shipping_building"
                                placeholder="建物名・部屋番号（任意）"
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_building') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif>

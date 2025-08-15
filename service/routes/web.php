@@ -31,6 +31,10 @@ Route::get('/shopping/customer', function () {
     return view('shopping.customer');
 })->name('shopping.customer');
 
+Route::get('/shopping/order', function () {
+    return view('shopping.order');
+})->name('shopping.order');
+
 Route::post('/shopping/change', [CartController::class, 'change'])->name('shopping.change');
 Route::post('/shopping/decide', [CartController::class, 'decide'])->name('shopping.decide');
 

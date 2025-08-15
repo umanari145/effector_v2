@@ -75,7 +75,7 @@ class CustomerFormRequest extends FormRequest
             'address.required' => '住所は必須です。',
             'address.max' => '住所は100文字以内で入力してください。',
             'building.max' => '建物名は100文字以内で入力してください。',
-            
+
             // 配送先情報のメッセージ
             'shipping_name.required' => '配送先お名前は必須です。',
             'shipping_name.max' => '配送先お名前は100文字以内で入力してください。',

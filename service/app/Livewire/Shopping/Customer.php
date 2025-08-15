@@ -5,6 +5,7 @@ namespace App\Livewire\Shopping;
 use Livewire\Component;
 use App\Services\CartService;
 use App\Http\Requests\CustomerFormRequest;
+use Illuminate\Support\Facades\Validator;
 
 class Customer extends Component
 {
@@ -49,13 +50,16 @@ class Customer extends Component
     public function mount()
     {
         $cartService = app(CartService::class);
+        $this->formRequest = new CustomerFormRequest();
         $this->items = $cartService->getAllItems();
         $this->quantities = session()->get('cart_quantities');
         if ($this->quantities === []) {
-            redirect()->route('cart.index');
+            redirect()->route('shopping.cart');
         }
-        $this->message = 'ご希望の商確認画面';
-        $this->getSeesionCart();
+
+        // セッションから既存の顧客情報を復元
+        $this->loadCartInfoFromSession();
+        $this->loadCustomerInfoFromSession();
     }
 
     public function updated($propertyName)
@@ -63,6 +67,61 @@ class Customer extends Component
         // 配送先が購入者と同じ場合の処理
         if ($propertyName === 'same_as_customer') {
             $this->toggleShippingAddress();
+        }
+    }
+
+    public function loadCartInfoFromSession()
+    {
+        $this->totalPrice = 0;
+        foreach ($this->items as $item) {
+            $name = $item->name;
+            $quantity = (int)($this->quantities[$item->id] ?? 0);
+            $price = $quantity * $item->price;
+            $this->totalPrice += $price;
+            $item = [
+                'name' => $name,
+                'quantity' => $quantity,
+                'price' => $price
+            ];
+            $this->cartItems[] = $item;
+        }
+    }
+
+    public function loadCustomerInfoFromSession()
+    {
+        // 購入者情報をセッションから復元
+        $customerInfo = session()->get('customer_info', []);
+        if (!empty($customerInfo)) {
+            $this->name = $customerInfo['name'] ?? '';
+            $this->name_kana = $customerInfo['name_kana'] ?? '';
+            $this->email = $customerInfo['email'] ?? '';
+            $this->phone = $customerInfo['phone'] ?? '';
+            $this->postal_code = $customerInfo['postal_code'] ?? '';
+            $this->prefecture = $customerInfo['prefecture'] ?? '';
+            $this->city = $customerInfo['city'] ?? '';
+            $this->address = $customerInfo['address'] ?? '';
+            $this->building = $customerInfo['building'] ?? '';
+        }
+
+        // 配送先情報をセッションから復元
+        $shippingInfo = session()->get('shipping_info', []);
+        if (!empty($shippingInfo)) {
+            $this->same_as_customer = $shippingInfo['same_as_customer'] ?? false;
+
+            // 配送先が購入者と異なる場合のみ配送先情報を復元
+            if (!$this->same_as_customer) {
+                $this->shipping_name = $shippingInfo['shipping_name'] ?? '';
+                $this->shipping_name_kana = $shippingInfo['shipping_name_kana'] ?? '';
+                $this->shipping_phone = $shippingInfo['shipping_phone'] ?? '';
+                $this->shipping_postal_code = $shippingInfo['shipping_postal_code'] ?? '';
+                $this->shipping_prefecture = $shippingInfo['shipping_prefecture'] ?? '';
+                $this->shipping_city = $shippingInfo['shipping_city'] ?? '';
+                $this->shipping_address = $shippingInfo['shipping_address'] ?? '';
+                $this->shipping_building = $shippingInfo['shipping_building'] ?? '';
+            } else {
+                // 購入者と同じ場合は配送先情報を購入者情報で上書き
+                $this->toggleShippingAddress();
+            }
         }
     }
 
@@ -80,32 +139,11 @@ class Customer extends Component
         }
     }
 
-    public function getSeesionCart()
-    {
-        $this->totalPrice = 0;
-        foreach ($this->items as $item) {
-            $name = $item->name;
-            $quantity = (int)($this->quantities[$item->id] ?? 0);
-            $price = $quantity * $item->price;
-            $this->totalPrice += $price;
-            $item = [
-                'name' => $name,
-                'quantity' => $quantity,
-                'price' => $price
-            ];
-            $this->cartItems[] = $item;
-        }
-    }
-
     public function submit()
     {
-        $request = app(CustomerFormRequest::class);
-        $rules = $request->rules();
-        $messages = $request->messages();
-
-        $this->validate($rules, $messages);
-
-        session()->put('customer_info', [
+        $this->resetErrorBag();
+        $formRequest = new CustomerFormRequest();
+        $customerInfo = [
             'name' => $this->name,
             'name_kana' => $this->name_kana,
             'email' => $this->email,
@@ -114,13 +152,39 @@ class Customer extends Component
             'prefecture' => $this->prefecture,
             'city' => $this->city,
             'address' => $this->address,
-            'building' => $this->building,
-        ]);
-
-        // 配送先情報の保存
-        $shippingInfo = [
-            'same_as_customer' => $this->same_as_customer,
+            'building' => $this->building
         ];
+
+        // 現在のコンポーネントのデータを配列として準備
+        $shippingInfo = [
+            'shipping_name' => $this->shipping_name,
+            'shipping_name_kana' => $this->shipping_name_kana,
+            'shipping_phone' => $this->shipping_phone,
+            'shipping_postal_code' => $this->shipping_postal_code,
+            'shipping_prefecture' => $this->shipping_prefecture,
+            'shipping_city' => $this->shipping_city,
+            'shipping_address' => $this->shipping_address,
+            'shipping_building' => $this->shipping_building,
+        ];
+
+
+        $data = array_merge(
+            $customerInfo,
+            ['same_as_customer' => $this->same_as_customer],
+            $shippingInfo
+        );
+        // 配送先情報の保存
+        $validator = Validator::make($data, $formRequest->rules(), $formRequest->messages());
+
+        if ($validator->fails()) {
+            // バリデーションエラーをLivewireに適用
+            foreach ($validator->errors()->toArray() as $field => $messages) {
+                $this->addError($field, $messages[0]);
+            }
+            return;
+        }
+
+        session()->put('customer_info', $customerInfo);
 
         if ($this->same_as_customer) {
             // 購入者と同じ場合は購入者情報をコピー
@@ -151,7 +215,7 @@ class Customer extends Component
         session()->put('shipping_info', $shippingInfo);
         session()->flash('message', '顧客情報を保存しました。');
 
-        return redirect()->route('cart.order');
+        return redirect()->route('shopping.order');
     }
 
     public function backToCart()

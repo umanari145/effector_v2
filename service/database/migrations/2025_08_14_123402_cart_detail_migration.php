@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('cart_id');
             $table->unsignedBigInteger('item_id');
-            $table->integer('quantity');
-            $table->timestamp('buy_time')->nullable();
+            $table->tinyInteger('quantity');
+            $table->integer('price');
             $table->timestamps();
 
             // 外部キー制約

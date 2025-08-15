@@ -4,6 +4,8 @@ namespace App\Livewire\Shopping;
 
 use Livewire\Component;
 use App\Services\CartService;
+use App\Services\CustomerService;
+use App\Services\ShoppingSessionService;
 use App\Http\Requests\CustomerFormRequest;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,23 +39,20 @@ class Customer extends Component
     public $shipping_address = '';
     public $shipping_building = '';
 
-    public $prefectures = [
-        '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県',
-        '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県',
-        '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県',
-        '静岡県', '愛知県', '三重県', '滋賀県', '京都府', '大阪府', '兵庫県',
-        '奈良県', '和歌山県', '鳥取県', '島根県', '岡山県', '広島県', '山口県',
-        '徳島県', '香川県', '愛媛県', '高知県', '福岡県', '佐賀県', '長崎県',
-        '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県'
-    ];
+    public $prefectures = [];
 
     public function mount()
     {
         $cartService = app(CartService::class);
+        $customerService = app(CustomerService::class);
+        $sessionService = app(ShoppingSessionService::class);
+
         $this->formRequest = new CustomerFormRequest();
         $this->items = $cartService->getAllItems();
-        $this->quantities = session()->get('cart_quantities');
-        if ($this->quantities === []) {
+        $this->prefectures = $customerService->getPrefectures();
+        $this->quantities = $sessionService->getCartQuantities();
+
+        if (empty($this->quantities)) {
             redirect()->route('shopping.cart');
         }
 
@@ -72,52 +71,49 @@ class Customer extends Component
 
     public function loadCartInfoFromSession()
     {
-        $this->totalPrice = 0;
-        foreach ($this->items as $item) {
-            $name = $item->name;
-            $quantity = (int)($this->quantities[$item->id] ?? 0);
-            $price = $quantity * $item->price;
-            $this->totalPrice += $price;
-            $item = [
-                'name' => $name,
-                'quantity' => $quantity,
-                'price' => $price
-            ];
-            $this->cartItems[] = $item;
-        }
+        $cartService = app(CartService::class);
+        $cartData = $cartService->calculateCartData($this->items, $this->quantities);
+
+        $this->cartItems = $cartData['cartItems'];
+        $this->totalPrice = $cartData['totalPrice'];
     }
 
     public function loadCustomerInfoFromSession()
     {
+        $customerService = app(CustomerService::class);
+        $sessionService = app(ShoppingSessionService::class);
+
         // 購入者情報をセッションから復元
-        $customerInfo = session()->get('customer_info', []);
+        $customerInfo = $sessionService->getCustomerInfo();
         if (!empty($customerInfo)) {
-            $this->name = $customerInfo['name'] ?? '';
-            $this->kana = $customerInfo['kana'] ?? '';
-            $this->email = $customerInfo['email'] ?? '';
-            $this->tel = $customerInfo['tel'] ?? '';
-            $this->zip = $customerInfo['zip'] ?? '';
-            $this->prefecture = $customerInfo['prefecture'] ?? '';
-            $this->city = $customerInfo['city'] ?? '';
-            $this->address = $customerInfo['address'] ?? '';
-            $this->building = $customerInfo['building'] ?? '';
+            $restoredCustomer = $customerService->restoreCustomerFromSession($customerInfo);
+            $this->name = $restoredCustomer['name'];
+            $this->kana = $restoredCustomer['kana'];
+            $this->email = $restoredCustomer['email'];
+            $this->tel = $restoredCustomer['tel'];
+            $this->zip = $restoredCustomer['zip'];
+            $this->prefecture = $restoredCustomer['prefecture'];
+            $this->city = $restoredCustomer['city'];
+            $this->address = $restoredCustomer['address'];
+            $this->building = $restoredCustomer['building'];
         }
 
         // 配送先情報をセッションから復元
-        $shippingInfo = session()->get('shipping_info', []);
+        $shippingInfo = $sessionService->getShippingInfo();
         if (!empty($shippingInfo)) {
-            $this->same_as_customer = $shippingInfo['same_as_customer'] ?? false;
+            $restoredShipping = $customerService->restoreShippingFromSession($shippingInfo);
+            $this->same_as_customer = $restoredShipping['same_as_customer'];
 
             // 配送先が購入者と異なる場合のみ配送先情報を復元
             if (!$this->same_as_customer) {
-                $this->shipping_name = $shippingInfo['shipping_name'] ?? '';
-                $this->shipping_kana = $shippingInfo['shipping_kana'] ?? '';
-                $this->shipping_tel = $shippingInfo['shipping_tel'] ?? '';
-                $this->shipping_zip = $shippingInfo['shipping_zip'] ?? '';
-                $this->shipping_prefecture = $shippingInfo['shipping_prefecture'] ?? '';
-                $this->shipping_city = $shippingInfo['shipping_city'] ?? '';
-                $this->shipping_address = $shippingInfo['shipping_address'] ?? '';
-                $this->shipping_building = $shippingInfo['shipping_building'] ?? '';
+                $this->shipping_name = $restoredShipping['shipping_name'];
+                $this->shipping_kana = $restoredShipping['shipping_kana'];
+                $this->shipping_tel = $restoredShipping['shipping_tel'];
+                $this->shipping_zip = $restoredShipping['shipping_zip'];
+                $this->shipping_prefecture = $restoredShipping['shipping_prefecture'];
+                $this->shipping_city = $restoredShipping['shipping_city'];
+                $this->shipping_address = $restoredShipping['shipping_address'];
+                $this->shipping_building = $restoredShipping['shipping_building'];
             } else {
                 // 購入者と同じ場合は配送先情報を購入者情報で上書き
                 $this->toggleShippingAddress();
@@ -128,22 +124,40 @@ class Customer extends Component
     public function toggleShippingAddress()
     {
         if ($this->same_as_customer) {
-            $this->shipping_name = $this->name;
-            $this->shipping_kana = $this->kana;
-            $this->shipping_tel = $this->tel;
-            $this->shipping_zip = $this->zip;
-            $this->shipping_prefecture = $this->prefecture;
-            $this->shipping_city = $this->city;
-            $this->shipping_address = $this->address;
-            $this->shipping_building = $this->building;
+            $customerService = app(CustomerService::class);
+            $customerData = [
+                'name' => $this->name,
+                'kana' => $this->kana,
+                'tel' => $this->tel,
+                'zip' => $this->zip,
+                'prefecture' => $this->prefecture,
+                'city' => $this->city,
+                'address' => $this->address,
+                'building' => $this->building
+            ];
+
+            $shippingData = $customerService->copyCustomerToShipping($customerData);
+            $this->shipping_name = $shippingData['shipping_name'];
+            $this->shipping_kana = $shippingData['shipping_kana'];
+            $this->shipping_tel = $shippingData['shipping_tel'];
+            $this->shipping_zip = $shippingData['shipping_zip'];
+            $this->shipping_prefecture = $shippingData['shipping_prefecture'];
+            $this->shipping_city = $shippingData['shipping_city'];
+            $this->shipping_address = $shippingData['shipping_address'];
+            $this->shipping_building = $shippingData['shipping_building'];
         }
     }
 
     public function submit()
     {
         $this->resetErrorBag();
+        $customerService = app(CustomerService::class);
+        $sessionService = app(ShoppingSessionService::class);
+
         $formRequest = new CustomerFormRequest();
-        $customerInfo = [
+
+        // サービスを使用してフォームデータを準備
+        $customerInfo = $customerService->prepareCustomerData([
             'name' => $this->name,
             'kana' => $this->kana,
             'email' => $this->email,
@@ -153,10 +167,9 @@ class Customer extends Component
             'city' => $this->city,
             'address' => $this->address,
             'building' => $this->building
-        ];
+        ]);
 
-        // 現在のコンポーネントのデータを配列として準備
-        $shippingInfo = [
+        $shippingInfo = $customerService->prepareShippingData([
             'shipping_name' => $this->shipping_name,
             'shipping_kana' => $this->shipping_kana,
             'shipping_tel' => $this->shipping_tel,
@@ -165,54 +178,35 @@ class Customer extends Component
             'shipping_city' => $this->shipping_city,
             'shipping_address' => $this->shipping_address,
             'shipping_building' => $this->shipping_building,
-        ];
-
+        ]);
 
         $data = array_merge(
             $customerInfo,
             ['same_as_customer' => $this->same_as_customer],
             $shippingInfo
         );
-        // 配送先情報の保存
+
+        // バリデーション
         $validator = Validator::make($data, $formRequest->rules(), $formRequest->messages());
 
         if ($validator->fails()) {
-            // バリデーションエラーをLivewireに適用
             foreach ($validator->errors()->toArray() as $field => $messages) {
                 $this->addError($field, $messages[0]);
             }
             return;
         }
 
-        session()->put('customer_info', $customerInfo);
+        // セッションに保存
+        $sessionService->saveCustomerInfo($customerInfo);
 
         if ($this->same_as_customer) {
             // 購入者と同じ場合は購入者情報をコピー
-            $shippingInfo = array_merge($shippingInfo, [
-                'shipping_name' => $this->name,
-                'shipping_kana' => $this->kana,
-                'shipping_tel' => $this->tel,
-                'shipping_zip' => $this->zip,
-                'shipping_prefecture' => $this->prefecture,
-                'shipping_city' => $this->city,
-                'shipping_address' => $this->address,
-                'shipping_building' => $this->building,
-            ]);
-        } else {
-            // 配送先が異なる場合は配送先情報を使用
-            $shippingInfo = array_merge($shippingInfo, [
-                'shipping_name' => $this->shipping_name,
-                'shipping_kana' => $this->shipping_kana,
-                'shipping_tel' => $this->shipping_tel,
-                'shipping_zip' => $this->shipping_zip,
-                'shipping_prefecture' => $this->shipping_prefecture,
-                'shipping_city' => $this->shipping_city,
-                'shipping_address' => $this->shipping_address,
-                'shipping_building' => $this->shipping_building,
-            ]);
+            $shippingInfo = array_merge($shippingInfo, $customerService->copyCustomerToShipping($customerInfo));
         }
 
-        session()->put('shipping_info', $shippingInfo);
+        $shippingInfo['same_as_customer'] = $this->same_as_customer;
+        $sessionService->saveShippingInfo($shippingInfo);
+
         session()->flash('message', '顧客情報を保存しました。');
 
         return redirect()->route('shopping.order');

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('shipping_id');
+            $table->integer('total_price');
             $table->timestamps();
 
             // 外部キー制約

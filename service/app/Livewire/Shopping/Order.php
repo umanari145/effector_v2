@@ -4,6 +4,7 @@ namespace App\Livewire\Shopping;
 
 use Livewire\Component;
 use App\Services\CartService;
+use App\Services\ShoppingSessionService;
 
 class Order extends Component
 {
@@ -17,24 +18,26 @@ class Order extends Component
 
     public function mount()
     {
-        // セッションから商品情報を取得
         $cartService = app(CartService::class);
+        $sessionService = app(ShoppingSessionService::class);
+
+        // セッションから商品情報を取得
         $this->items = $cartService->getAllItems();
-        $this->quantities = session()->get('cart_quantities', []);
+        $this->quantities = $sessionService->getCartQuantities();
 
         // カート内容がない場合はカート画面にリダイレクト
-        if (empty($this->quantities) || array_sum($this->quantities) === 0) {
+        if ($sessionService->isCartEmpty()) {
             return redirect()->route('shopping.cart');
         }
 
         // 購入者情報を取得
-        $this->customerInfo = session()->get('customer_info', []);
+        $this->customerInfo = $sessionService->getCustomerInfo();
         if (empty($this->customerInfo)) {
             return redirect()->route('shopping.customer');
         }
 
         // 配送先情報を取得
-        $this->shippingInfo = session()->get('shipping_info', []);
+        $this->shippingInfo = $sessionService->getShippingInfo();
         if (empty($this->shippingInfo)) {
             return redirect()->route('shopping.customer');
         }
@@ -45,22 +48,11 @@ class Order extends Component
 
     public function getCartItems()
     {
-        $this->totalPrice = 0;
-        $this->cartItems = [];
+        $cartService = app(CartService::class);
+        $cartData = $cartService->calculateCartData($this->items, $this->quantities);
 
-        foreach ($this->items as $item) {
-            $quantity = (int)($this->quantities[$item->id] ?? 0);
-            if ($quantity > 0) {
-                $price = $quantity * $item->price;
-                $this->totalPrice += $price;
-                $this->cartItems[] = [
-                    'name' => $item->name,
-                    'quantity' => $quantity,
-                    'unit_price' => $item->price,
-                    'price' => $price
-                ];
-            }
-        }
+        $this->cartItems = $cartData['cartItems'];
+        $this->totalPrice = $cartData['totalPrice'];
     }
 
     public function backToCustomer()
@@ -75,12 +67,50 @@ class Order extends Component
 
     public function confirmOrder()
     {
-        // 注文確定処理（後で実装）
-        session()->flash('message', 'ご注文ありがとうございました。');
-        // セッションをクリア
-        session()->forget(['cart_quantities', 'customer_info', 'shipping_info']);
+        try {
+            $cartService = app(CartService::class);
 
-        return redirect()->route('home');
+            // カート内容を準備
+            $cartItems = [];
+            foreach ($this->items as $item) {
+                $quantity = (int)($this->quantities[$item->id] ?? 0);
+                if ($quantity > 0) {
+                    $cartItems[] = [
+                        'item_id' => $item->id,
+                        'name' => $item->name,
+                        'quantity' => $quantity,
+                        'unit_price' => $item->price,
+                        'price' => $quantity * $item->price
+                    ];
+                }
+            }
+
+            // 配送先が購入者と同じかどうかを判定
+            $sameAsCustomer = $this->shippingInfo['same_as_customer'] ?? false;
+
+            // 注文を完了
+            $success = $cartService->completeOrder(
+                $this->customerInfo,
+                $this->shippingInfo,
+                $cartItems,
+                $sameAsCustomer
+            );
+
+            if ($success) {
+                session()->flash('message', 'ご注文ありがとうございました。確認メールをお送りしました。');
+                // セッションをクリア
+                $sessionService = app(ShoppingSessionService::class);
+                $sessionService->clearShoppingSession();
+                return redirect()->route('home');
+            } else {
+                session()->flash('error', '注文処理中にエラーが発生しました。お手数ですが、もう一度お試しください。');
+                return;
+            }
+        } catch (\Exception $e) {
+            \Log::error('Order confirmation failed: ' . $e->getMessage());
+            session()->flash('error', '注文処理中にエラーが発生しました。お手数ですが、もう一度お試しください。');
+            return;
+        }
     }
 
     public function render()

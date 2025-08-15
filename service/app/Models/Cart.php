@@ -11,7 +11,8 @@ class Cart extends Model
 
     protected $fillable = [
         'customer_id',
-        'shipping_id'
+        'shipping_id',
+        'total_price'
     ];
 
     protected $casts = [

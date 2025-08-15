@@ -13,7 +13,7 @@ class CartDetail extends Model
         'cart_id',
         'item_id',
         'quantity',
-        'buy_time'
+        'price'
     ];
 
     protected $casts = [

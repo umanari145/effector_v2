@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\CartRepository;
 use App\Repositories\CustomerRepository;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use App\Mail\OrderConfirmationMail;
 
 class CartService
@@ -21,144 +22,6 @@ class CartService
     }
 
     /**
-     * カート内容を取得
-     */
-    public function getCartContents(): array
-    {
-        $cartItems = $this->cartRepository->getCartItems();
-        $totalSum = $this->calculateTotal($cartItems);
-
-        return [
-            'items' => $cartItems,
-            'total' => $totalSum
-        ];
-    }
-
-    /**
-     * 商品をカートに追加
-     */
-    public function addProductsToCart(int $bioQuantity, int $sukuaraQuantity): array
-    {
-        $result = ['success' => true, 'message' => ''];
-
-        // バイオ商品（item_id: 1）
-        if ($bioQuantity > 0) {
-            if (!$this->cartRepository->addToCart(1, $bioQuantity)) {
-                $result['success'] = false;
-                $result['message'] = 'バイオ商品の追加に失敗しました。';
-                return $result;
-            }
-        }
-
-        // スクアラミン商品（item_id: 2）
-        if ($sukuaraQuantity > 0) {
-            if (!$this->cartRepository->addToCart(2, $sukuaraQuantity)) {
-                $result['success'] = false;
-                $result['message'] = 'スクアラミン商品の追加に失敗しました。';
-                return $result;
-            }
-        }
-
-        if ($bioQuantity <= 0 && $sukuaraQuantity <= 0) {
-            $result['success'] = false;
-            $result['message'] = '商品数を選択してください。';
-        }
-
-        return $result;
-    }
-
-    /**
-     * 商品IDごとにカートに追加
-     */
-    public function addProductsToCartByItems(array $itemQuantities): array
-    {
-        $result = ['success' => true, 'message' => ''];
-
-        foreach ($itemQuantities as $itemId => $quantity) {
-            $quantity = (int)$quantity;
-            if ($quantity > 0) {
-                if (!$this->cartRepository->addToCart($itemId, $quantity)) {
-                    $result['success'] = false;
-                    $result['message'] = '商品の追加に失敗しました。';
-                    return $result;
-                }
-            }
-        }
-
-        $totalQuantity = array_sum($itemQuantities);
-        if ($totalQuantity <= 0) {
-            $result['success'] = false;
-            $result['message'] = '商品数を選択してください。';
-        }
-
-        return $result;
-    }
-
-    /**
-     * 購入金額を計算
-     */
-    public function calculatePurchaseAmount(int $bioQuantity, int $sukuaraQuantity): array
-    {
-        $bioPrice = $bioQuantity * 9720;
-        $sukuaraPrice = $sukuaraQuantity * 12960;
-        $totalPrice = $bioPrice + $sukuaraPrice;
-
-        return [
-            'bio_price' => $bioPrice,
-            'sukuara_price' => $sukuaraPrice,
-            'total_price' => $totalPrice
-        ];
-    }
-
-    /**
-     * 商品IDごとの購入金額を計算
-     */
-    public function calculatePurchaseAmountByItems(array $itemQuantities): array
-    {
-        $items = $this->getAllItems();
-        $itemPrices = [];
-        $totalPrice = 0;
-
-        foreach ($items as $item) {
-            $quantity = isset($itemQuantities[$item->id]) ? (int)$itemQuantities[$item->id] : 0;
-            $price = $quantity * $item->price;
-
-            if ($quantity > 0) {
-                $itemPrices['item_' . $item->id . '_price'] = $price;
-                $totalPrice += $price;
-            }
-        }
-
-        $itemPrices['total_price'] = $totalPrice;
-        return $itemPrices;
-    }
-
-    /**
-     * 注文を完了
-     */
-    public function completeOrder(array $customerData, array $deliveryData = []): bool
-    {
-        try {
-            // 顧客情報を保存
-            $customer = $this->customerRepository->create($customerData, $deliveryData);
-
-            // カート商品を購入済みに更新
-            $this->cartRepository->markAsPurchased();
-
-            // 確認メール送信
-            Mail::to($customer->email)->send(new OrderConfirmationMail($customer));
-
-            return true;
-        } catch (\Exception $e) {
-            \Log::error('Order completion failed: ' . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * 合計金額を計算
-     */
-    /**
      * 全商品を取得
      */
     public function getAllItems()
@@ -166,8 +29,108 @@ class CartService
         return $this->cartRepository->getAllItems();
     }
 
-    private function calculateTotal($cartItems): int
+    /**
+     * カート内容と価格を計算
+     */
+    public function calculateCartData($items, array $quantities): array
     {
-        return $cartItems->sum('total');
+        $cartItems = [];
+        $itemPrices = [];
+        $totalPrice = 0;
+
+        foreach ($items as $item) {
+            $quantity = (int)($quantities[$item->id] ?? 0);
+            $price = $quantity * $item->price;
+
+            $itemPrices[$item->id] = $price;
+            $totalPrice += $price;
+
+            if ($quantity > 0) {
+                $cartItems[] = [
+                    'item_id' => $item->id,
+                    'name' => $item->name,
+                    'quantity' => $quantity,
+                    'unit_price' => $item->price,
+                    'price' => $price
+                ];
+            }
+        }
+
+        return [
+            'cartItems' => $cartItems,
+            'itemPrices' => $itemPrices,
+            'totalPrice' => $totalPrice
+        ];
+    }
+
+    /**
+     * カート追加可能かどうかを判定
+     */
+    public function canAddToCart(int $totalPrice): bool
+    {
+        return $totalPrice > 0;
+    }
+
+    /**
+     * カート数量を検証
+     */
+    public function validateCartQuantities(array $quantities): bool
+    {
+        return array_sum($quantities) > 0;
+    }
+
+    /**
+     * 注文を完了
+     */
+    public function completeOrder(array $customerData, array $shippingData, array $cartItems, bool $sameAsCustomer = false): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // 顧客情報を保存
+            $customer = $this->customerRepository->createCustomer($customerData);
+
+            // 配送先情報を保存
+            if ($sameAsCustomer) {
+                // 購入者と同じ住所の場合、顧客情報をコピー
+                $shippingData = [
+                    'shipping_name' => $customerData['name'],
+                    'shipping_kana' => $customerData['kana'],
+                    'shipping_tel' => $customerData['tel'],
+                    'shipping_zip' => $customerData['zip'],
+                    'shipping_prefecture' => $customerData['prefecture'],
+                    'shipping_city' => $customerData['city'],
+                    'shipping_address' => $customerData['address'],
+                    'shipping_building' => $customerData['building'] ?? ''
+                ];
+            }
+            $shipping = $this->customerRepository->createShipping($shippingData);
+
+            // 合計金額を計算
+            $totalPrice = array_sum(array_column($cartItems, 'price'));
+
+            // カートを作成
+            $cart = $this->cartRepository->createCart($customer, $shipping, $totalPrice);
+
+            // カート詳細を作成
+            foreach ($cartItems as $item) {
+                $this->cartRepository->createCartDetail(
+                    $cart,
+                    $item['item_id'],
+                    $item['quantity'],
+                    $item['price']
+                );
+            }
+
+            // 確認メール送信
+            Mail::to($customer->email)->send(new OrderConfirmationMail($customer, $cart, $cartItems));
+
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Order completion failed: ' . $e->getMessage());
+            return false;
+        }
     }
 }

@@ -73,7 +73,7 @@
                         お名前（カナ）
                     </th>
                     <td class="px-6 py-4 text-gray-900">
-                        {{ $customerInfo['name_kana'] ?? '' }}
+                        {{ $customerInfo['kana'] ?? '' }}
                     </td>
                 </tr>
                 <tr>
@@ -81,7 +81,7 @@
                         電話番号
                     </th>
                     <td class="px-6 py-4 text-gray-900">
-                        {{ $customerInfo['phone'] ?? '' }}
+                        {{ $customerInfo['tel'] ?? '' }}
                     </td>
                 </tr>
                 <tr>
@@ -97,7 +97,7 @@
                         郵便番号
                     </th>
                     <td class="px-6 py-4 text-gray-900">
-                        {{ $customerInfo['postal_code'] ?? '' }}
+                        {{ $customerInfo['zip'] ?? '' }}
                     </td>
                 </tr>
                 <tr>
@@ -139,7 +139,7 @@
                             お名前（カナ）
                         </th>
                         <td class="px-6 py-4 text-gray-900">
-                            {{ $shippingInfo['shipping_name_kana'] ?? '' }}
+                            {{ $shippingInfo['shipping_kana'] ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -147,7 +147,7 @@
                             電話番号
                         </th>
                         <td class="px-6 py-4 text-gray-900">
-                            {{ $shippingInfo['shipping_phone'] ?? '' }}
+                            {{ $shippingInfo['shipping_tel'] ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -155,7 +155,7 @@
                             郵便番号
                         </th>
                         <td class="px-6 py-4 text-gray-900">
-                            {{ $shippingInfo['shipping_postal_code'] ?? '' }}
+                            {{ $shippingInfo['shipping_zip'] ?? '' }}
                         </td>
                     </tr>
                     <tr>

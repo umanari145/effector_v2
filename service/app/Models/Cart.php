@@ -10,47 +10,36 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'item_id',
-        'num',
-        'flg',
-        'buy_time'
+        'customer_id',
+        'shipping_id'
     ];
 
     protected $casts = [
-        'buy_time' => 'datetime',
-        'flg' => 'boolean'
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     /**
-     * 商品との関連
+     * 顧客との関連
      */
-    public function item()
+    public function customer()
     {
-        return $this->belongsTo(Item::class, 'item_id', 'id');
+        return $this->belongsTo(Customer::class);
     }
 
     /**
-     * カート内の商品を取得
+     * 配送先との関連
      */
-    public function scopeInCart($query)
+    public function shipping()
     {
-        return $query->where('flg', false);
+        return $this->belongsTo(Shipping::class);
     }
 
     /**
-     * 購入済みの商品を取得
+     * カート詳細との関連
      */
-    public function scopePurchased($query)
+    public function cartDetails()
     {
-        return $query->where('flg', true);
-    }
-
-    /**
-     * 最新の買い物カートを取得
-     */
-    public function scopeLatestCart($query)
-    {
-        $latestBuyTime = self::max('buy_time');
-        return $query->where('buy_time', $latestBuyTime);
+        return $this->hasMany(CartDetail::class);
     }
 }

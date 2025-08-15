@@ -66,11 +66,11 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.live="name_kana"
-                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('name_kana') border-red-500 @enderror"
+                               wire:model.live="kana"
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('kana') border-red-500 @enderror"
                                title="カタカナで入力してください"
                         >
-                        @error('name_kana')
+                        @error('kana')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </td>
@@ -81,12 +81,12 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="tel"
-                               wire:model.live="phone"
-                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('phone') border-red-500 @enderror"
+                               wire:model.live="tel"
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('tel') border-red-500 @enderror"
                                title="電話番号は数字とハイフンのみで入力してください"
                                placeholder="例: 03-1234-5678"
                         >
-                        @error('phone')
+                        @error('tel')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </td>
@@ -111,13 +111,13 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.live="postal_code"
-                               class="w-32 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('postal_code') border-red-500 @enderror"
+                               wire:model.live="zip"
+                               class="w-32 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('zip') border-red-500 @enderror"
                                title="郵便番号は「000-0000」の形式で入力してください"
                                placeholder="000-0000"
                                maxlength="8"
                         >
-                        @error('postal_code')
+                        @error('zip')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </td>
@@ -215,11 +215,11 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.live="shipping_name_kana"
-                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_name_kana') border-red-500 @enderror"
+                               wire:model.live="shipping_kana"
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_kana') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif
                                title="カタカナで入力してください">
-                        @error('shipping_name_kana')
+                        @error('shipping_kana')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </td>
@@ -230,12 +230,12 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="tel"
-                               wire:model.live="shipping_phone"
-                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_phone') border-red-500 @enderror"
+                               wire:model.live="shipping_tel"
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_tel') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif
                                title="電話番号は数字とハイフンのみで入力してください"
                                placeholder="例: 03-1234-5678">
-                        @error('shipping_phone')
+                        @error('shipping_tel')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </td>
@@ -246,13 +246,13 @@
                     </th>
                     <td class="px-6 py-4 text-gray-900">
                         <input type="text"
-                               wire:model.live="shipping_postal_code"
-                               class="w-32 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_postal_code') border-red-500 @enderror"
+                               wire:model.live="shipping_zip"
+                               class="w-32 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @if($same_as_customer) bg-gray-100 text-gray-500 @endif @error('shipping_zip') border-red-500 @enderror"
                                @if($same_as_customer) disabled @endif
                                title="郵便番号は「000-0000」の形式で入力してください"
                                placeholder="000-0000"
                                maxlength="8">
-                        @error('shipping_postal_code')
+                        @error('shipping_zip')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </td>

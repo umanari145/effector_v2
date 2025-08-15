@@ -17,10 +17,10 @@ class Customer extends Component
 
     // 購入者情報
     public $name = '';
-    public $name_kana = '';
+    public $kana = '';
     public $email = '';
-    public $phone = '';
-    public $postal_code = '';
+    public $tel = '';
+    public $zip = '';
     public $prefecture = '';
     public $city = '';
     public $address = '';
@@ -29,9 +29,9 @@ class Customer extends Component
     // 配送先情報
     public $same_as_customer = false;
     public $shipping_name = '';
-    public $shipping_name_kana = '';
-    public $shipping_phone = '';
-    public $shipping_postal_code = '';
+    public $shipping_kana = '';
+    public $shipping_tel = '';
+    public $shipping_zip = '';
     public $shipping_prefecture = '';
     public $shipping_city = '';
     public $shipping_address = '';
@@ -93,10 +93,10 @@ class Customer extends Component
         $customerInfo = session()->get('customer_info', []);
         if (!empty($customerInfo)) {
             $this->name = $customerInfo['name'] ?? '';
-            $this->name_kana = $customerInfo['name_kana'] ?? '';
+            $this->kana = $customerInfo['kana'] ?? '';
             $this->email = $customerInfo['email'] ?? '';
-            $this->phone = $customerInfo['phone'] ?? '';
-            $this->postal_code = $customerInfo['postal_code'] ?? '';
+            $this->tel = $customerInfo['tel'] ?? '';
+            $this->zip = $customerInfo['zip'] ?? '';
             $this->prefecture = $customerInfo['prefecture'] ?? '';
             $this->city = $customerInfo['city'] ?? '';
             $this->address = $customerInfo['address'] ?? '';
@@ -111,9 +111,9 @@ class Customer extends Component
             // 配送先が購入者と異なる場合のみ配送先情報を復元
             if (!$this->same_as_customer) {
                 $this->shipping_name = $shippingInfo['shipping_name'] ?? '';
-                $this->shipping_name_kana = $shippingInfo['shipping_name_kana'] ?? '';
-                $this->shipping_phone = $shippingInfo['shipping_phone'] ?? '';
-                $this->shipping_postal_code = $shippingInfo['shipping_postal_code'] ?? '';
+                $this->shipping_kana = $shippingInfo['shipping_kana'] ?? '';
+                $this->shipping_tel = $shippingInfo['shipping_tel'] ?? '';
+                $this->shipping_zip = $shippingInfo['shipping_zip'] ?? '';
                 $this->shipping_prefecture = $shippingInfo['shipping_prefecture'] ?? '';
                 $this->shipping_city = $shippingInfo['shipping_city'] ?? '';
                 $this->shipping_address = $shippingInfo['shipping_address'] ?? '';
@@ -129,9 +129,9 @@ class Customer extends Component
     {
         if ($this->same_as_customer) {
             $this->shipping_name = $this->name;
-            $this->shipping_name_kana = $this->name_kana;
-            $this->shipping_phone = $this->phone;
-            $this->shipping_postal_code = $this->postal_code;
+            $this->shipping_kana = $this->kana;
+            $this->shipping_tel = $this->tel;
+            $this->shipping_zip = $this->zip;
             $this->shipping_prefecture = $this->prefecture;
             $this->shipping_city = $this->city;
             $this->shipping_address = $this->address;
@@ -145,10 +145,10 @@ class Customer extends Component
         $formRequest = new CustomerFormRequest();
         $customerInfo = [
             'name' => $this->name,
-            'name_kana' => $this->name_kana,
+            'kana' => $this->kana,
             'email' => $this->email,
-            'phone' => $this->phone,
-            'postal_code' => $this->postal_code,
+            'tel' => $this->tel,
+            'zip' => $this->zip,
             'prefecture' => $this->prefecture,
             'city' => $this->city,
             'address' => $this->address,
@@ -158,9 +158,9 @@ class Customer extends Component
         // 現在のコンポーネントのデータを配列として準備
         $shippingInfo = [
             'shipping_name' => $this->shipping_name,
-            'shipping_name_kana' => $this->shipping_name_kana,
-            'shipping_phone' => $this->shipping_phone,
-            'shipping_postal_code' => $this->shipping_postal_code,
+            'shipping_kana' => $this->shipping_kana,
+            'shipping_tel' => $this->shipping_tel,
+            'shipping_zip' => $this->shipping_zip,
             'shipping_prefecture' => $this->shipping_prefecture,
             'shipping_city' => $this->shipping_city,
             'shipping_address' => $this->shipping_address,
@@ -190,9 +190,9 @@ class Customer extends Component
             // 購入者と同じ場合は購入者情報をコピー
             $shippingInfo = array_merge($shippingInfo, [
                 'shipping_name' => $this->name,
-                'shipping_name_kana' => $this->name_kana,
-                'shipping_phone' => $this->phone,
-                'shipping_postal_code' => $this->postal_code,
+                'shipping_kana' => $this->kana,
+                'shipping_tel' => $this->tel,
+                'shipping_zip' => $this->zip,
                 'shipping_prefecture' => $this->prefecture,
                 'shipping_city' => $this->city,
                 'shipping_address' => $this->address,
@@ -202,9 +202,9 @@ class Customer extends Component
             // 配送先が異なる場合は配送先情報を使用
             $shippingInfo = array_merge($shippingInfo, [
                 'shipping_name' => $this->shipping_name,
-                'shipping_name_kana' => $this->shipping_name_kana,
-                'shipping_phone' => $this->shipping_phone,
-                'shipping_postal_code' => $this->shipping_postal_code,
+                'shipping_kana' => $this->shipping_kana,
+                'shipping_tel' => $this->shipping_tel,
+                'shipping_zip' => $this->shipping_zip,
                 'shipping_prefecture' => $this->shipping_prefecture,
                 'shipping_city' => $this->shipping_city,
                 'shipping_address' => $this->shipping_address,

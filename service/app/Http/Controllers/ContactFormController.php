@@ -48,7 +48,7 @@ class ContactFormController extends Controller
 
         try {
             // メール送信
-            Mail::send(new ContactFormMail($formData));
+            Mail::to($formData['email1'])->send(new ContactFormMail($formData));
             // セッションからデータを削除
             session()->forget('form_data');
             return view('contact.complete');

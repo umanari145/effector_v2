@@ -16,34 +16,30 @@ Route::view('/bio', 'static.bio')->name('bio');
 Route::view('/sukuaramin', 'static.sukuaramin')->name('sukuaramin');
 Route::view('/qa', 'static.qa')->name('qa');
 
-Route::get('/contact', [ContactFormController::class, 'index'])->name('contact.form');
-Route::post('/contact/confirm', [ContactFormController::class, 'confirm'])->name('contact.confirm');
-Route::post('/contact/complete', [ContactFormController::class, 'complete'])->name('contact.complete');
+// お問い合わせフォームのルートをグループ化
+Route::group(['prefix' => 'contact', 'as' => 'contact.'], function () {
+    Route::get('/', [ContactFormController::class, 'index'])->name('form');
+    Route::post('/confirm', [ContactFormController::class, 'confirm'])->name('confirm');
+    Route::post('/complete', [ContactFormController::class, 'complete'])->name('complete');
+});
 
+// ショッピング関連のルートをグループ化
+Route::group(['prefix' => 'shopping', 'as' => 'shopping.'], function () {
+    Route::get('/cart', function () {
+        return view('shopping.cart');
+    })->name('cart');
 
-Route::get('/shopping/cart', function () {
-    return view('shopping.cart');
-})->name('shopping.cart');
+    Route::get('/customer', function () {
+        return view('shopping.customer');
+    })->name('customer');
 
-Route::get('/shopping/customer', function () {
-    return view('shopping.customer');
-})->name('shopping.customer');
+    Route::get('/order', function () {
+        return view('shopping.order');
+    })->name('order');
 
-Route::get('/shopping/order', function () {
-    return view('shopping.order');
-})->name('shopping.order');
-
-
-/*Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
-
-    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-});*/
+    Route::get('/complete', function () {
+        return view('shopping.complete');
+    })->name('complete');
+});
 
 require __DIR__.'/auth.php';

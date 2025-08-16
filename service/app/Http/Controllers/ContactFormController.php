@@ -13,7 +13,21 @@ class ContactFormController extends Controller
      */
     public function index()
     {
-        return view('contact.form');
+        $formData = session('form_data', null);
+
+        $validated = [
+            'name' => $formData['name'] ?? '',
+            'tel1' => $formData['tel1'] ?? '',
+            'tel2' => $formData['tel2'] ?? '',
+            'tel3' => $formData['tel3'] ?? '',
+            'email1' => $formData['email1'] ?? '',
+            'email2' => $formData['email2'] ?? '',
+            'zip1' => $formData['zip1'] ?? '',
+            'zip2' => $formData['zip2'] ?? '',
+            'address' => $formData['address'] ?? ''
+        ];
+
+        return view('contact.form', compact('validated'));
     }
 
     /**

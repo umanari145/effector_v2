@@ -21,7 +21,7 @@
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('name') border-red-500 @enderror"
                                id="name"
                                name="name"
-                               value="{{ old('name') }}"
+                               value="{{ old('name', $validated['name']) }}"
                                placeholder="お名前を入力してください">
                         @error('name')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -39,21 +39,21 @@
                             <input type="text"
                                    class="w-20 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('tel') border-red-500 @enderror"
                                    name="tel1"
-                                   value="{{ old('tel1') }}"
+                                   value="{{ old('tel1', $validated['tel1']) }}"
                                    placeholder="090"
                                    maxlength="4">
                             <span>-</span>
                             <input type="text"
                                    class="w-20 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('tel') border-red-500 @enderror"
                                    name="tel2"
-                                   value="{{ old('tel2') }}"
+                                   value="{{ old('tel2', $validated['tel2']) }}"
                                    placeholder="1234"
                                    maxlength="4">
                             <span>-</span>
                             <input type="text"
                                    class="w-20 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('tel') border-red-500 @enderror"
                                    name="tel3"
-                                   value="{{ old('tel3') }}"
+                                   value="{{ old('tel3', $validated['tel3']) }}"
                                    placeholder="5678"
                                    maxlength="4">
                         </div>
@@ -73,7 +73,7 @@
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('email1') border-red-500 @enderror"
                                id="email1"
                                name="email1"
-                               value="{{ old('email1') }}"
+                               value="{{ old('email1', $validated['email1']) }}"
                                placeholder="example@example.com">
                         @error('email1')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -91,7 +91,7 @@
                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('email2') border-red-500 @enderror"
                                id="email2"
                                name="email2"
-                               value="{{ old('email2') }}"
+                               value="{{ old('email2', $validated['email2']) }}"
                                placeholder="確認のため再度入力してください">
                         @error('email2')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -109,14 +109,14 @@
                             <input type="text"
                                    class="w-16 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('zip') border-red-500 @enderror"
                                    name="zip1"
-                                   value="{{ old('zip1') }}"
+                                   value="{{ old('zip1', $validated['zip1'])}}"
                                    placeholder="123"
                                    maxlength="3">
                             <span>-</span>
                             <input type="text"
                                    class="w-20 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500 @error('zip') border-red-500 @enderror"
                                    name="zip2"
-                                   value="{{ old('zip2') }}"
+                                   value="{{ old('zip2', $validated['zip2']) }}"
                                    placeholder="4567"
                                    maxlength="4">
                         </div>
@@ -136,7 +136,7 @@
                                   id="address"
                                   name="address"
                                   rows="3"
-                                  placeholder="住所を入力してください">{{ old('address') }}</textarea>
+                                  placeholder="住所を入力してください">{{ old('address', $validated['address']) }}</textarea>
                         @error('address')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror

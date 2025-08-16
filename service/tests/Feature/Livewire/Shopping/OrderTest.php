@@ -144,7 +144,7 @@ class OrderTest extends TestCase
 
         Livewire::test(Order::class)
             ->call('confirmOrder')
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('shopping.complete'));
 
         // Verify different customer and shipping records
         $this->assertDatabaseHas('customers', [

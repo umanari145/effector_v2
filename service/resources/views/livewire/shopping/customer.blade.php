@@ -36,7 +36,7 @@
         <div class="text-center mb-6">
             <button type="button"
                     wire:click="backToCart"
-                    class="bg-green-600 text-white font-bold py-2 px-6 rounded-lg">
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
                 カート内容を変更する
             </button>
         </div>

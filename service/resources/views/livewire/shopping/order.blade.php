@@ -49,7 +49,7 @@
     <div class="flex justify-center items-center mt-4">
         <button type="button"
                 wire:click="backToCart"
-                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-200">
+                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-200">
             カート内容を変更
         </button>
     </div>
@@ -179,7 +179,7 @@
     <div class="flex justify-center items-center mt-3">
         <button type="button"
                 wire:click="backToCustomer"
-                class="bg-green-600 mr-4 text-white font-bold py-2 px-6 rounded-lg">
+                class="bg-green-600 hover:bg-green-700 mr-4 text-white font-bold py-2 px-6 rounded-lg">
             お客様情報を変更
         </button>
         <button type="button"

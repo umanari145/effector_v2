@@ -101,7 +101,7 @@ class Order extends Component
                 // セッションをクリア
                 $sessionService = app(ShoppingSessionService::class);
                 $sessionService->clearShoppingSession();
-                return redirect()->route('home');
+                return redirect()->route('shopping.complete');
             } else {
                 session()->flash('error', '注文処理中にエラーが発生しました。お手数ですが、もう一度お試しください。');
                 return;

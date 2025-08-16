@@ -38,11 +38,6 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs　
 
-RUN apt-get update \
-  && apt-get upgrade\
-  && apt-get install libsqlite3-dev\
-  && apt-get install sqlite3
-
 # modRewriteを有効化する
 RUN mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled
 RUN /bin/sh -c a2enmod rewrite

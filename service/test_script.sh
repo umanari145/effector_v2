@@ -1,5 +1,6 @@
 #!/bin/bash
 cd /var/www/html
+apt-get install libsqlite3-dev  && apt-get install sqlite3
 cp .env.ci .env
 composer install
 php artisan db:seed

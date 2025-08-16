@@ -1,0 +1,38 @@
+version: "3"
+services:
+  service:
+    container_name: su-service
+    build:
+      context: "docker/service/"
+    ports:
+      - 8000:80
+    volumes:
+      - "./service/:/var/www/html"
+      - "./docker/service/apache2/apache2.conf:/etc/apache2/apache2.conf"
+      - "./docker/service/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf"
+    depends_on:
+      - db
+    networks:
+      - surimuni
+
+  db:
+    container_name: su-db
+    image: mysql:8.0
+    volumes:
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_DATABASE=homestead
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=secret
+      - TZ=Asia/Tokyo
+      - DB_PORT=3306
+    ports:
+      - "3306:3306"
+    networks:
+      - surimuni
+
+networks:
+  surimuni:
+    driver: "bridge"

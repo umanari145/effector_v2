@@ -67,7 +67,7 @@ claude --version
 
 ## migration データ投入
 ```
-docker exec -it kourin-srv 
+docker exec -it kourin-srv bash
 php artisan migrate
 php artisan db:seed
 ```
@@ -77,19 +77,3 @@ php artisan db:seed
 docker exec -it kourin-srv bash
 ./vendor/bin/phpunit ./test
 ```
-
-submit
-service/resources/views/contact/confirm.blade.phpの[送信する」
-service/resources/views/livewire/shopping/order.blade.phpの「注文を確定する」
-を押下した際にローディングするような処理をいれてください。
-
-
-
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const orderButton = document.getElementById('orderButton');
-    const ordertext = document.getElementById('orderText');
-    orderButton.addEventListener('mouseover', function() {
-        orderButton.disabled = true;
-        ordertext.innerText= '送信中...';
-        loadingSpinner.classList.remove('hidden');
-    });

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('prefecture', 5);
             $table->string('city', 10);
             $table->string('address', 100);
-            $table->string('building', 100);
+            $table->string('building', 100)->nullable();
             $table->timestamps();
         });
     }

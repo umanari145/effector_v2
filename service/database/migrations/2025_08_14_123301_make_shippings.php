@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('shipping_prefecture', 5);
             $table->string('shipping_city', 10);
             $table->string('shipping_address', 100);
-            $table->string('shipping_building', 100);
+            $table->string('shipping_building', 100)->nullable();
             $table->timestamps();
         });
     }

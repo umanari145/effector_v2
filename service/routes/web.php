@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactFormController;
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
 
 # 静的サイト
 Route::view('/', 'static.home')->name('home');
@@ -35,10 +33,8 @@ Route::get('/shopping/order', function () {
     return view('shopping.order');
 })->name('shopping.order');
 
-Route::post('/shopping/change', [CartController::class, 'change'])->name('shopping.change');
-Route::post('/shopping/decide', [CartController::class, 'decide'])->name('shopping.decide');
 
-Route::view('dashboard', 'dashboard')
+/*Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -48,6 +44,6 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-});
+});*/
 
 require __DIR__.'/auth.php';

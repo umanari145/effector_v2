@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: dokcer-compose Laravel Init
         run: |
-          docker compose -f docker-compose-ci.yaml up -d
+          docker compose -f docker-compose.yaml up -d
       - name: phpunit
         run: |
           docker exec -i kourin-srv bash test_script.sh
